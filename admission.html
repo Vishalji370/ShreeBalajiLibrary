@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apply for Admission - Shree Balaji</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="admission.css"/>
+  
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="logo.jpg" alt="Logo">
+      <div>
+        <strong>Shree Balaji</strong><br />
+        <small>Library & Study Center</small>
+      </div>
+    </div>
+    <a href="index.html">&larr; Back to Home</a>
+  </header>
+
+  <div class="main-title">
+    <h1>Apply for Admission</h1>
+    <p>Fill out the form below to start your application process</p>
+  </div>
+
+  <div class="form-container">
+    <h2><i class="fas fa-file-alt"></i> Admission Application Form</h2>
+    <p>Please provide accurate information. All fields marked with * are required.</p>
+
+    <form id="admissionForm" class="form-section">
+      <div class="row">
+        <div class="col">
+          <label for="firstName">First Name *</label>
+          <input type="text" id="firstName" placeholder="Enter your first name" required>
+          <div class="error-message" id="firstNameError"></div>
+        </div>
+        <div class="col">
+          <label for="lastName">Last Name *</label>
+          <input type="text" id="lastName" placeholder="Enter your last name" required>
+          <div class="error-message" id="lastNameError"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="email">Email Address (Optional)</label>
+          <input type="email" id="email" placeholder="Enter your email">
+        </div>
+        <div class="col">
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" placeholder="Enter your phone number" required>
+          <div class="error-message" id="phoneError"></div>
+        </div>
+      </div>
+
+      <label for="address">Address *</label>
+      <textarea id="address" placeholder="Enter your complete address" rows="3" required></textarea>
+
+      <label for="experience">Previous Study Center Experience (Optional)</label>
+      <textarea id="experience" placeholder="Have you used similar facilities before? Tell us about your experience. If none, type NA." rows="3"></textarea>
+
+      <div class="button-wrapper">
+        <button type="submit" class="submit-button">
+          <span class="btn-text">Submit Application</span>
+          <div class="spinner"></div>
+        </button>
+      </div>
+    </form>
+
+    <div id="successMessage">✅ Your application was submitted successfully!</div>
+  </div>
+
+  <footer>
+    Empowering students with modern digital learning facilities and comfortable study environments.<br>
+    &copy; 2025 Shree Balaji Library & Study Center. All rights reserved.
+  </footer>
+
+  <script>
+    function showError(id, message) {
+      const el = document.getElementById(id);
+      el.textContent = message;
+      el.previousElementSibling.style.borderColor = "#dc2626";
+    }
+
+    function clearErrors() {
+      ["firstNameError", "lastNameError", "phoneError"].forEach(id => {
+        const el = document.getElementById(id);
+        el.textContent = "";
+        el.previousElementSibling.style.borderColor = "#d1d5db";
+      });
+    }
+
+    function showSuccess() {
+      const successMsg = document.getElementById("successMessage");
+      successMsg.style.display = "block";
+      setTimeout(() => {
+        successMsg.style.display = "none";
+      }, 5000);
+    }
+
+    async function submitForm(event) {
+      event.preventDefault();
+      clearErrors();
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const experience = document.getElementById("experience").value.trim();
+
+      let hasError = false;
+
+      if (!firstName) {
+        showError("firstNameError", "First name is required.");
+        hasError = true;
+      }
+
+      if (!lastName) {
+        showError("lastNameError", "Last name is required.");
+        hasError = true;
+      }
+
+      const phonePattern = /^(?:\+91|91)?[6-9]\d{9}$/;
+      if (!phonePattern.test(phone)) {
+        showError("phoneError", "Enter a valid 10-digit Indian mobile number starting with 6-9.");
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      const data = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        address,
+        experience
+      };
+
+      const submitBtn = document.querySelector(".submit-button");
+      const spinner = document.querySelector(".spinner");
+      const btnText = document.querySelector(".btn-text");
+
+      submitBtn.disabled = true;
+      btnText.textContent = "Submitting...";
+      spinner.style.display = "inline-block";
+
+      try {
+        await fetch("https://script.google.com/macros/s/AKfycbySzqkPkSA7Xak6WZwWNJFajKSaxjuO-54a1Tz6FIZ3LfqmcrhFN4dqXByeczJbzprf/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        document.getElementById("admissionForm").reset();
+        showSuccess();
+      } catch (error) {
+        console.error("Submission failed:", error);
+      }
+
+      btnText.textContent = "Submit Application";
+      spinner.style.display = "none";
+      submitBtn.disabled = false;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("admissionForm").addEventListener("submit", submitForm);
+    });
+  </script>
+</body>
+</html>

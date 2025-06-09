@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pay Fees | Shree Balaji Digital Library</title>
+  <link rel="stylesheet" href="index.css"/>
+  <style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #e1bee7);
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+
+  .pay-section {
+    max-width: 700px;
+    margin: 100px auto;
+    padding: 30px;
+    background: #ffffffcc;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.6s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(30px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  .pay-section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #4a148c;
+  }
+
+  .pay-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .pay-form input,
+  .pay-form select {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ba68c8;
+    border-radius: 10px;
+    background-color: #f3e5f5;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  .pay-form input:focus,
+  .pay-form select:focus {
+    box-shadow: 0 0 8px #7b1fa2;
+  }
+
+  .pay-form button {
+    background: linear-gradient(135deg, #8e24aa, #7b1fa2);
+    color: white;
+    font-size: 17px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+
+  .pay-form button:hover {
+    background: linear-gradient(135deg, #6a1b9a, #4a148c);
+  }
+
+  #qr-container {
+    text-align: center;
+    margin-top: 30px;
+    background: #fce4ec;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  #qr-container img {
+    max-width: 220px;
+    height: auto;
+    margin: 20px auto;
+  }
+
+  #qr-container a {
+    background: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    display: inline-block;
+    margin: 8px 6px 0;
+    transition: background 0.3s ease;
+  }
+
+  #qr-container a:hover {
+    background: #388e3c;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+  }
+
+  table th,
+  table td {
+    padding: 12px;
+    border: 1px solid #d1c4e9;
+    text-align: center;
+  }
+
+  table thead {
+    background-color: #ede7f6;
+    color: #4a148c;
+  }
+
+  .error-msg {
+    color: red;
+    font-size: 14px;
+    margin-top: -8px;
+    margin-bottom: 8px;
+  }
+
+  /* Mobile Menu Icon */
+  .menu-toggle {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 999;
+  }
+
+  .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.logo p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  padding-left: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+nav ul li a.active {
+  color: #7b1fa2;
+}
+
+/* Show menu icon on mobile */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  nav ul {
+    display: none;
+  }
+
+  nav.active ul {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+  /* Responsive Navigation */
+  
+  @media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 999;
+  }
+
+  nav.active {
+    display: block;
+  }
+
+  nav ul {
+    flex-direction: column;
+    width: 200px;
+  }
+
+  nav ul li {
+    width: 80%;
+    margin: 5px 0;
+  }
+
+  nav ul li a {
+    color: #507be6;
+    display: block;
+    width: 100%;
+  }
+}
+
+</style>
+
+</head>
+<body>
+
+  <!-- Navbar -->
+ <header class="navbar">
+  <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+ <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">
+  <img src="logo.jpg" alt="Logo">
+  <div>
+    <h1>Shree Balaji</h1>
+    <p>Library & Study Center</p>
+  </div>
+</a>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="admission.html">Admission</a></li>
+      <li><a href="payfees.html" class="active">Pay Fees</a></li>
+      <li><a href="index.html#contact">Contact Us</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+  </nav>
+</header>
+
+  <!-- Pay Fees Section -->
+  <section class="pay-section">
+    <h2>Library Fee Structure</h2>
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse: collapse; margin-bottom: 30px;">
+        <thead style="background-color: #f1f1f1;">
+          <tr>
+            <th style="padding: 12px; border: 1px solid #ccc;">Category</th>
+            <th style="padding: 12px; border: 1px solid #ccc;">Duration</th>
+            <th style="padding: 12px; border: 1px solid #ccc;">Amount (INR)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #ccc;">1 Shift fees</td>
+            <td style="padding: 12px; border: 1px solid #ccc;">1 Month</td>
+            <td style="padding: 12px; border: 1px solid #ccc;">₹399</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #ccc;">1 Shift fees</td>
+            <td style="padding: 12px; border: 1px solid #ccc;">3 Months</td>
+            <td style="padding: 12px; border: 1px solid #ccc;">₹999</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #ccc;">1 Shift fees</td>
+            <td style="padding: 12px; border: 1px solid #ccc;">6 Months</td>
+            <td style="padding: 12px; border: 1px solid #ccc;">₹1799</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #ccc;">Full Day Shift</td>
+            <td style="padding: 12px; border: 1px solid #ccc;">1 Month</td>
+            <td style="padding: 12px; border: 1px solid #ccc;">₹899</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="text-align: center; margin-bottom: 40px;">Remarks:- Fees should be paid within 3 days after joining.</p>
+
+    <h2>Pay Your Fees</h2>
+    <form class="pay-form" novalidate>
+  <input type="text" id="name" placeholder="Full Name" required>
+  <small class="error-msg" id="name-error"></small>
+
+  <input type="tel" id="phone" placeholder="Phone Number" required>
+  <small class="error-msg" id="phone-error"></small>
+
+  <label for="plan-select">Select Plan</label>
+  <select id="plan-select" required>
+    <option value="">Select Plan</option>
+    <option value="shift1_1month">1 Shift - 1 Month (₹399)</option>
+    <option value="shift1_3months">1 Shift - 3 Months (₹999)</option>
+    <option value="shift1_6months">1 Shift - 6 Months (₹1799)</option>
+    <option value="fullday_1month">Full Day - 1 Month (₹899)</option>
+  </select>
+  <small class="error-msg" id="plan-error"></small>
+
+  <input type="number" id="amount" placeholder="Enter Amount (₹)" required>
+  <small class="error-msg" id="amount-error"></small>
+
+  <button type="submit">Pay Now</button>
+</form>
+
+
+    <!-- QR Code Display -->
+    <div id="qr-container"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <div class="footer-logo">
+          <img src="logo.jpg" alt="Logo" />
+          <div>
+            <h4>Shree Balaji</h4>
+            <span> Library</span>
+          </div>
+        </div>
+        <p>Empowering students with modern digital learning facilities and comfortable study environments.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="admission.html">Admission</a></li>
+          <li><a href="payfees.html">Fee Structure</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>                
+      <div class="footer-column">
+        <h4>Contact us</h4>
+        <ul>
+          <li>Abhishek Verma : +91 8303904399</li>
+          <li>vyaduvanshi20@gmail.com</li>
+          <li>Mahuwar (Nahar ke pass), Tahbarpur
+            Azamgarh, 276208</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Shree Balaji Library & Study Center. All rights reserved.</p>
+    </div>
+  </footer>
+<!-- [unchanged HTML above this point] -->
+
+<!-- Form Submit Handler Script -->
+<script>
+
+  const menuToggle = document.getElementById("mobile-menu");
+  const nav = document.querySelector("nav");
+
+  menuToggle.addEventListener("click", () => {
+    nav.classList.toggle("active");
+  });
+
+  // Close menu if clicked outside
+  document.addEventListener("click", (e) => {
+    if (!nav.contains(e.target) && !menuToggle.contains(e.target)) {
+      nav.classList.remove("active");
+    }
+  });
+  document.querySelector('.pay-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Input values
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const plan = document.getElementById('plan-select').value;
+    const amount = document.getElementById('amount').value.trim();
+
+    // Error elements
+    const nameErr = document.getElementById('name-error');
+    const phoneErr = document.getElementById('phone-error');
+    const planErr = document.getElementById('plan-error');
+    const amountErr = document.getElementById('amount-error');
+
+    // Reset errors
+    nameErr.textContent = '';
+    phoneErr.textContent = '';
+    planErr.textContent = '';
+    amountErr.textContent = '';
+
+    let isValid = true;
+
+    // Validate Name
+    if (!name || !/[A-Za-z]/.test(name)) {
+      nameErr.textContent = 'Please enter a valid name.';
+      isValid = false;
+    }
+
+    // Validate Phone (accepts 10-digit or +91 followed by 10-digit)
+    const phonePattern = /^(\+91[\s-]?)?\d{10}$/;
+    if (!phonePattern.test(phone)) {
+      phoneErr.textContent = 'Please enter a valid phone number (with or without +91).';
+      isValid = false;
+    }
+
+    // Validate Plan
+    if (!plan) {
+      planErr.textContent = 'Please select a plan.';
+      isValid = false;
+    }
+
+    // Validate Amount
+    if (!amount || parseInt(amount) <= 0) {
+      amountErr.textContent = 'Please enter a valid amount.';
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
+    // Proceed with QR code
+    const upiID = "7991283957@ybl";
+    const upiLink = `upi://pay?pa=${upiID}&pn=Shree%20Balaji%20Library&am=${amount}&cu=INR`;
+    const qrURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(upiLink)}&size=250x250`;
+
+    const planText = plan.replaceAll('_', ' ');
+    const whatsappMsg = `Hi, I have paid ₹${amount} for ${planText}. Attaching screenshot.`;
+    const whatsappLink = `https://wa.me/919264966412?text=${encodeURIComponent(whatsappMsg)}`;
+
+    const qrContainer = document.getElementById("qr-container");
+    qrContainer.innerHTML = `
+      <h3>Scan to Pay</h3>
+      <img src="${qrURL}" alt="QR Code to Pay" />
+      <p><strong>Amount:</strong> ₹${amount}</p>
+      <a href="${upiLink}">💳 Open in UPI App</a><br><br>
+      <a href="${whatsappLink}" target="_blank">📷 Send Screenshot via WhatsApp</a>
+    `;
+  });
+</script>
+
+
+
+
+
+<!-- [rest of your footer and script remains unchanged] -->
+<script src="index.js"></script>
+</body>
+</html>
